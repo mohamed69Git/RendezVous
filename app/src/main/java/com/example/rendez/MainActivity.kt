@@ -2,6 +2,9 @@ package com.example.rendez
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.JsonWriter
+import android.util.Log
+import android.util.Log.VERBOSE
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -20,61 +23,95 @@ import retrofit2.HttpException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    //Mor variables
-    lateinit var emailView: TextInputLayout;
-    lateinit var passwordView: TextInputLayout;
-    lateinit var loginBtn: Button;
-    lateinit var spinner: ProgressBar;
+    var newUser= RegisterBody()
+    lateinit var email: TextInputLayout
+    lateinit var name: TextInputLayout
+    lateinit var password: TextInputLayout
 
-    private lateinit var binding: ActivityMainBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        emailView = binding.email
-        passwordView = binding.password
-        loginBtn = binding.loginButton
-        spinner = binding.spinner
-        loginBtn.setOnClickListener {
-            this.login()
+//        sayHello()
+        email = findViewById<TextInputLayout>(R.id.email)
+        name= findViewById<TextInputLayout>(R.id.name)
+        password = findViewById<TextInputLayout>(R.id.password)
+
+//        newUser.name = findViewById<TextInputEditText>(R.id.name).text.toString()
+//        newUser.password = findViewById<TextInputEditText>(R.id.password).text.toString()
+        val button = findViewById<Button>(R.id.loginButton).setOnClickListener{
+            newUser.email = email.editText?.text.toString()
+            newUser.name = name.editText?.text.toString()
+            newUser.password = password.editText?.text.toString()
+
+//            register(newUser)
+            sayHello()
+//            Toast.makeText(this, "$newUser", Toast.LENGTH_SHORT).show()
         }
 
-
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.unRv = RendezVous()
-//        binding.saveButton.setOnClickListener {
-////            var str: String = binding.idRendezVous.toString()
-//            binding.unRv = RendezVous(
-//                binding.idRendezvous.toString(),
-//                binding.lieu.toString(),
-//                binding.description.toString(),
-//                Date(
-//                    binding.dateRendezVous.year, binding.dateRendezVous.month, binding.dateRendezVous.dayOfMonth
-//                ),
-//
-//            )
-//            Toast.makeText(this,binding.unRv.toString(), Toast.LENGTH_SHORT).show()
-//        }
     }
 
-    private fun login() {
-        val email = emailView
-        val password = passwordView
+
+    fun register(user: RegisterBody) {
 
         val service = RetrofitFactory.makeRetrofitService()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.login(LoginBody(email.toString(), password.toString()))
+            val response = service.register(user)
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
                         println("RESPONSE: ${response.body()}")
                     } else {
-                        println("RESPONSE NOT: $response");
+                        print("THE RESPONSE FAILED:   $response")
                     }
                 } catch (e: HttpException) {
                     println("Exception ${e.message}")
                 } catch (e: Throwable) {
-                    println("Ooops: Something else went wrong")
+                    println("Oops: Something else went wrong")
+                }
+            }
+        }
+    }
+
+    fun sayHello() {
+        lateinit var chaine: String
+        val service = RetrofitFactory.makeRetrofitService()
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = service.getHello()
+            withContext(Dispatchers.Main) {
+                try {
+                    if (response.isSuccessful) {
+                        println("RESPONSE: ${response.body()}")
+                    } else {
+                        print("THE RESPONSE FAILED:   $response")
+                    }
+                } catch (e: HttpException) {
+                    println("Exception ${e.message}")
+                } catch (e: Throwable) {
+                    println("Oops: Something else went wrong")
+                }
+            }
+        }
+
+    }
+
+    fun login(user: LoginBody){
+        val service = RetrofitFactory.makeRetrofitService()
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = service.login(user)
+            withContext(Dispatchers.Main) {
+                try {
+                    if (response.isSuccessful) {
+                        println("RESPONSE: ${response.body()}")
+                    } else {
+                        print("THE RESPONSE FAILED:   $response")
+                    }
+                } catch (e: HttpException) {
+                    println("Exception ${e.message}")
+                } catch (e: Throwable) {
+                    println("Oops: Something else went wrong")
                 }
             }
         }

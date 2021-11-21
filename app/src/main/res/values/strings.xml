@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">RendezVous</string>
-    <string name="titleHeader">Saisie des informations d\'un nouveau Rendez-Vous</string>
+    <string name="titleHeader">Saisie vos identifiants</string>
     <string name="hint_forHeader">Id du rendez-vous</string>
     <string name="hint_lieu">Lieu du rendez-vous</string>
     <string name="hint_description">Description du rendez-vous</string>
     <string name="enregistrer">Enregistrer le rendez-vous</string>
     <string name="text_list"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero perspiciatis culpa impedit necessitatibus molestias voluptates maxime, odit, ut soluta nobis iste assumenda veritatis aut quasi! Magnam vitae nostrum accusamus qui.</string>
-
+    <string name="submit">Envoyer</string>
     <string name="email_input">email</string>
     <string name="password_input">password</string>
     <string name="name_input">name</string>
